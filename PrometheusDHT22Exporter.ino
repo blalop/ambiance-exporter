@@ -26,7 +26,7 @@ void setup() {
     Serial.print("WiFi connected. Got IP: ");
     Serial.println(WiFi.localIP());
 
-    server.on("/", onConnectHandler);
+    server.on(METRICS_PATH, onMetricsPathHandler);
     server.onNotFound(onNotFoundHandler);
 
     server.begin();
@@ -37,7 +37,7 @@ void loop() {
     server.handleClient();
 }
 
-void onConnectHandler() {
+void onMetricsPathHandler() {
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
     server.send(200, "text/plain", buildMetrics(temperature, humidity));
@@ -48,6 +48,6 @@ void onNotFoundHandler() {
 }
 
 String buildMetrics(float temperature, float humidity) {
-    return METRIC_PREFIX + "_temperature " + String(temperature) + "\r\n" +
-           METRIC_PREFIX + "_humidty " + String(humidity);
+    return METRICS_PREFIX + "_temperature " + String(temperature) + "\r\n" +
+           METRICS_PREFIX + "_humidty " + String(humidity);
 }
