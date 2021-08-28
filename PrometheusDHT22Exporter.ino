@@ -48,6 +48,6 @@ void onNotFoundHandler() {
 }
 
 String buildMetrics(float temperature, float humidity) {
-    return METRICS_PREFIX + "_temperature " + String(temperature) + "\r\n" +
+    return METRICS_PREFIX + "_temperature " + String(temperature) + "\n" +
            METRICS_PREFIX + "_humidty " + String(humidity);
 }
