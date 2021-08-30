@@ -26,3 +26,8 @@ fp-info-cache
 # Exported BOM files
 *.xml
 *.csv
+
+# ESP8266 RTOS SDK related
+build
+toolchain/*
+!toolchain/README.md
