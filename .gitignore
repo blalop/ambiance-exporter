@@ -27,7 +27,12 @@ fp-info-cache
 *.xml
 *.csv
 
-# ESP8266 RTOS SDK related
+# ESP8266 toolchain & RTOS SDK
 build
 toolchain/*
 !toolchain/README.md
+sdkconfig
+sdkconfig.old
+
+# VSCode
+.vscode
