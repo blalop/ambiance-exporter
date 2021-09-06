@@ -26,3 +26,10 @@ fp-info-cache
 # Exported BOM files
 *.xml
 *.csv
+
+# VSCode
+.vscode
+
+# Platform.io
+.pio
+tmp_*
