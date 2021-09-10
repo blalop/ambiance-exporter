@@ -5,6 +5,8 @@
 #include <DHT.h>
 #include <unity.h>
 
+#include <string>
+
 DHT dht(DHTPIN, DHTTYPE);
 
 
@@ -19,9 +21,15 @@ void testReadDHTHumidity() {
 }
 
 void testBuildMetrics() {
-    String actual = buildMetrics("test", 1.0, 1.0);
-    String expected = "test_temperature 1.00\ntest_humidity 1.00";
-    TEST_ASSERT_EQUAL_STRING(expected.c_str(), actual.c_str());
+    PrometheusData data = { "1.0.0", "test", 1.0, 1.0 };
+    char buffer [1024];
+    const char *actual = buildMetrics(buffer, data);
+
+    const char *expectedTemperature = "test_temperature 1.00";
+    const char *expectedHumidity = "test_humidity 1.00";
+    TEST_ASSERT_EQUAL_STRING(buffer, actual);
+    TEST_ASSERT_NOT_NULL(strstr(actual, expectedTemperature));
+    TEST_ASSERT_NOT_NULL(strstr(actual, expectedHumidity));
 }
 
 void setup() {

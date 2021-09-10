@@ -1,6 +1,11 @@
 #pragma once
 
-#include <WString.h>
+struct PrometheusData {
+    const char *version;
+    const char *prefix;
+    float temperature;
+    float humidity;
+};
 
-String buildRoot();
-String buildMetrics(String prefix, float temperature, float humidity);
+const char *buildRoot();
+const char *buildMetrics(char *buffer, PrometheusData data);

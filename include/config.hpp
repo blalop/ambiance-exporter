@@ -12,3 +12,4 @@
 
 // Project specific config
 #define METRICS_PREFIX "esp8266"
+#define VERSION "0.3.0"

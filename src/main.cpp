@@ -17,10 +17,10 @@ void onRoot() {
 void onMetricsPathHandler() {
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
-    String prefix = String(METRICS_PREFIX);
 
-    Serial.print(temperature);
-    server.send(200, "text/plain", buildMetrics(prefix, temperature, humidity));
+    PrometheusData data = {VERSION, METRICS_PREFIX, temperature, humidity};
+    char buffer [1024];
+    server.send(200, "text/plain", buildMetrics(buffer, data));
 }
 
 void onNotFoundHandler() {
