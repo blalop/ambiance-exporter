@@ -1,11 +1,12 @@
 #pragma once
 
-struct PrometheusData {
+class PrometheusExporter {
+  public:
+    PrometheusExporter(const char *version, const char *prefix);
+    const char *buildRoot();
+    const char *buildMetrics(char *buffer, float temperature, float humidity);
+
+  private:
     const char *version;
     const char *prefix;
-    float temperature;
-    float humidity;
 };
-
-const char *buildRoot();
-const char *buildMetrics(char *buffer, PrometheusData data);

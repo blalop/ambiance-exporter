@@ -21,9 +21,9 @@ void testReadDHTHumidity() {
 }
 
 void testBuildMetrics() {
-    PrometheusData data = { "1.0.0", "test", 1.0, 1.0 };
+    PrometheusExporter exporter("1.0.0", "test");
     char buffer [1024];
-    const char *actual = buildMetrics(buffer, data);
+    const char *actual = exporter.buildMetrics(buffer, 1.0, 1.0);
 
     const char *expectedTemperature = "test_temperature 1.00";
     const char *expectedHumidity = "test_humidity 1.00";

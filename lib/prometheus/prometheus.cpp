@@ -2,7 +2,10 @@
 
 #include <cstdio>
 
-const char *buildRoot() {
+PrometheusExporter::PrometheusExporter(const char *version, const char *prefix)
+    : version(version), prefix(prefix) {}
+
+const char *PrometheusExporter::buildRoot() {
     return "<html>"
            "<head><title>Ambiance Exporter</title></head>"
            "<body>"
@@ -12,13 +15,14 @@ const char *buildRoot() {
            "</html>";
 }
 
-const char *buildMetrics(char* buffer, PrometheusData data) {
+const char *PrometheusExporter::buildMetrics(char *buffer, float temperature, float humidity) {
 #ifdef __VERSION__
-    int len = sprintf(buffer, "%s_%s{version=\"%s\",gccversion=\"%s\"} 1\n", data.prefix, "build_info", data.version, __VERSION__);
+    int len = sprintf(buffer, "%s_%s{version=\"%s\",gccversion=\"%s\"} 1\n", prefix,
+                      "build_info", version, __VERSION__);
 #else
-    int len = sprintf(buffer, "%s_%s{version=\"%s\"} 1\n", data.prefix, "build_info", data.version);
+    int len = sprintf(buffer, "%s_%s{version=\"%s\"} 1\n", prefix, "build_info", version);
 #endif
-    len += sprintf(buffer + len, "%s_%s %.2f\n", data.prefix, "temperature", data.temperature);
-    len += sprintf(buffer + len, "%s_%s %.2f\n", data.prefix, "humidity", data.humidity);
+    len += sprintf(buffer + len, "%s_%s %.2f\n", prefix, "temperature", temperature);
+    len += sprintf(buffer + len, "%s_%s %.2f\n", prefix, "humidity", humidity);
     return buffer;
 }

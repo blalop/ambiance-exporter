@@ -33,3 +33,6 @@ fp-info-cache
 # Platform.io
 .pio
 tmp_*
+
+# Project related
+include/config.hpp
