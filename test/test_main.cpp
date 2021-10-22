@@ -21,7 +21,7 @@ void testReadDHTHumidity() {
 }
 
 void testBuildMetrics() {
-    PrometheusExporter exporter("1.0.0", "10.2.1", "ambiance", "livingroom");
+    PrometheusExporter exporter("0.0.0", "10.2.1", "ambiance", "livingroom");
     char buffer [1024];
     const char *actual = exporter.buildMetrics(buffer, 1.0, 1.0);
 

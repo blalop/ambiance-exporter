@@ -18,7 +18,7 @@ WIFI_SSID='\"ssid\"' WIFI_PASS='\"pass\"' ROOM='\"livingroom\"' PLATFORMIO_UPLOA
 The output metrics look like this:
 
 ```
-ambiance_build_info{version="1.0.0",gccversion="10.3.0", room="bedroom"} 1
+ambiance_build_info{version="0.5.0",gccversion="10.3.0", room="bedroom"} 1
 ambiance_temperature{room="bedroom"} 22.00
 ambiance_humidity{room="bedroom"} 59.50
 ```
