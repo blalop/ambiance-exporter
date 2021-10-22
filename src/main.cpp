@@ -10,14 +10,14 @@
 
 ESP8266WebServer server(PORT);
 DHT dht(DHTPIN, DHTTYPE);
-PrometheusExporter prometheus(VERSION, METRICS_PREFIX);
+PrometheusExporter prometheus(VERSION, GCC_VERSION, METRICS_PREFIX, INSTANCE);
 
 void onRootHandler() { server.send(200, "text/html", prometheus.buildRoot()); }
 
 void onMetricsPathHandler() {
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
-    char body [1024];
+    char body [256];
 
     server.send(200, "text/plain", prometheus.buildMetrics(body, temperature, humidity));
 }
