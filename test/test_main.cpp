@@ -21,12 +21,12 @@ void testReadDHTHumidity() {
 }
 
 void testBuildMetrics() {
-    PrometheusExporter exporter("1.0.0", "test");
+    PrometheusExporter exporter("1.0.0", "10.2.1", "ambiance", "livingroom");
     char buffer [1024];
     const char *actual = exporter.buildMetrics(buffer, 1.0, 1.0);
 
-    const char *expectedTemperature = "test_temperature 1.00";
-    const char *expectedHumidity = "test_humidity 1.00";
+    const char *expectedTemperature = "ambiance_temperature{room=\"livingroom\"} 1.00";
+    const char *expectedHumidity = "ambiance_humidity{room=\"livingroom\"} 1.00";
     TEST_ASSERT_EQUAL_STRING(buffer, actual);
     TEST_ASSERT_NOT_NULL(strstr(actual, expectedTemperature));
     TEST_ASSERT_NOT_NULL(strstr(actual, expectedHumidity));
