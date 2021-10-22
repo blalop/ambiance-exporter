@@ -27,4 +27,4 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade platformio
     - name: Run PlatformIO
-      run: WIFI_SSID='\"ssid\"' WIFI_PASS='\"pass\"' INSTANCE='\"livingroom\"' pio run
+      run: WIFI_SSID='\"ssid\"' WIFI_PASS='\"pass\"' ROOM='\"livingroom\"' pio run

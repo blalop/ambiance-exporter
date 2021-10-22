@@ -4,8 +4,8 @@
 #include <cstdio>
 
 PrometheusExporter::PrometheusExporter(const char *version, const char *gcc, const char *prefix,
-                                       const char *instance)
-    : version(version), gcc(gcc), prefix(prefix), instance(instance) {}
+                                       const char *room)
+    : version(version), gcc(gcc), prefix(prefix), room(room) {}
 
 const char *PrometheusExporter::buildRoot() {
     return "<html>"
@@ -18,16 +18,16 @@ const char *PrometheusExporter::buildRoot() {
 }
 
 const char *PrometheusExporter::buildMetrics(char *buffer, float temperature, float humidity) {
-    int len = sprintf(buffer, "%s_%s{version=\"%s\", gccversion=\"%s\", instance=\"%s\"} 1\n",
-                      prefix, "build_info", version, gcc, instance);
+    int len = sprintf(buffer, "%s_%s{version=\"%s\",gccversion=\"%s\",room=\"%s\"} 1\n",
+                      prefix, "build_info", version, gcc, room);
 
     if (!std::isnan(temperature)) {
-        len += sprintf(buffer + len, "%s_%s{instance=\"%s\"} %.2f\n", prefix, "temperature",
-                       instance, temperature);
+        len += sprintf(buffer + len, "%s_%s{room=\"%s\"} %.2f\n", prefix, "temperature",
+                       room, temperature);
     }
 
     if (!std::isnan(humidity)) {
-        len += sprintf(buffer + len, "%s_%s{instance=\"%s\"} %.2f\n", prefix, "humidity", instance,
+        len += sprintf(buffer + len, "%s_%s{room=\"%s\"} %.2f\n", prefix, "humidity", room,
                        humidity);
     }
 

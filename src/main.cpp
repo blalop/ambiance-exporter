@@ -10,7 +10,7 @@
 
 ESP8266WebServer server(PORT);
 DHT dht(DHTPIN, DHTTYPE);
-PrometheusExporter prometheus(VERSION, GCC_VERSION, METRICS_PREFIX, INSTANCE);
+PrometheusExporter prometheus(VERSION, GCC_VERSION, METRICS_PREFIX, ROOM);
 
 void onRootHandler() { server.send(200, "text/html", prometheus.buildRoot()); }
 
