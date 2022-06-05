@@ -1,25 +1,50 @@
-#include "config.hpp"
-
-#include "prometheus.hpp"
-
 #include <Arduino.h>
 #include <ArduinoOTA.h>
 #include <DHT.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266WiFi.h>
 
+#include "config.h"
+
+#define VERSION "0.5"
+
 ESP8266WebServer server(PORT);
 DHT dht(DHTPIN, DHTTYPE);
-PrometheusExporter prometheus(VERSION, GCC_VERSION, METRICS_PREFIX, ROOM);
 
-void onRootHandler() { server.send(200, "text/html", prometheus.buildRoot()); }
+void onRootHandler() {
+    server.send(200, "text/html",
+                "<html>"
+                "<head><title>Ambiance Exporter</title></head>"
+                "<body>"
+                "<h1>Ambiance Exporter</h1>"
+                "<p><a href=\"/metrics\">Metrics</a></p>"
+                "</body>"
+                "</html>");
+}
+
+const char *buildMetrics(char *buffer, float temperature, float humidity) {
+    int len = sprintf(buffer, "%s_%s{version=\"%s\",gccversion=\"%s\",room=\"%s\"} 1\n", PREFIX,
+                      "build_info", VERSION, GCC_VERSION, ROOM_NAME);
+
+    if (!std::isnan(temperature)) {
+        len += sprintf(buffer + len, "%s_%s{room=\"%s\"} %.2f\n", PREFIX, "temperature", ROOM_NAME,
+                       temperature);
+    }
+
+    if (!std::isnan(humidity)) {
+        len += sprintf(buffer + len, "%s_%s{room=\"%s\"} %.2f\n", PREFIX, "humidity", ROOM_NAME,
+                       humidity);
+    }
+
+    return buffer;
+}
 
 void onMetricsPathHandler() {
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
-    char body [256];
+    char buffer[256];
 
-    server.send(200, "text/plain", prometheus.buildMetrics(body, temperature, humidity));
+    server.send(200, "text/plain", buildMetrics(buffer, temperature, humidity));
 }
 
 void onNotFoundHandler() { server.send(404, "text/plain", "Not found"); }
@@ -52,26 +77,12 @@ void setupServer() {
     Serial.println("HTTP server started");
 }
 
-void setupOTA() {
-    ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-        Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
-    });
-
-    ArduinoOTA.onEnd([]() { Serial.println("\nEnd"); });
-
-    ArduinoOTA.onError([](ota_error_t error) { Serial.printf("OTA error: %u\n", error); });
-
-    ArduinoOTA.begin();
-    Serial.println("OTA started");
-}
-
 void setup() {
     Serial.begin(115200);
 
     setupDHT();
     setupWiFi();
     setupServer();
-    setupOTA();
 }
 
 void loop() {
